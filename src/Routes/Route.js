@@ -8,12 +8,13 @@ import { Report } from '../Pages/Report';
 import { Entypo } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TelaInicial } from '../Pages/TelaInicial';
-import { Home, Sobre } from '../Pages/Home';
+import { Sobre } from '../Pages/Home';
 import { PostAdmin } from '../Pages/Admin/PostAdmin';
+import { Message } from '../Pages/Admin/Message';
 
 
 const Stack = createStackNavigator();
@@ -29,11 +30,19 @@ function TabNavigation(){
     );
 }
 
+function AdminNavigation(){
+    return(
+        <Tab.Navigator screenOptions={ {tabBarStyle:{backgroundColor: '#0047ab', height: 60}, tabBarActiveTintColor:'white', tabBarInactiveTintColor: '#94b2ff', headerStyle: {backgroundColor: '#0047ab'},  headerTitleAlign: 'center', headerTintColor: 'white'}}>
+            <Tab.Screen name="Post" options={{tabBarItemStyle: {marginBottom: 5}, tabBarIcon: ({ color }) => <Ionicons name="md-megaphone" size={30} color = {color} />, headerTitle: 'Post'} } component={PostAdmin}/>
+            <Tab.Screen name="Mensagens" options={{tabBarItemStyle: {marginBottom: 5,}, tabBarIcon: ({ color }) => <FontAwesome name="newspaper-o" size={30} color = {color} />, headerTitle: 'Mensagens'} } component={Message}/>
+        </Tab.Navigator>
+    )
+}
 function LoginNavigation(){
     return(
         <Stack.Navigator>
             <Stack.Screen name = "Login" options={{headerShown: false}} component = {Login}/>
-            <Stack.Screen name="Entrar" options={{headerStyle: {backgroundColor: '#0047ab'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white', headerTitleAlign: 'center'}} component = {PostAdmin}/>
+            <Stack.Screen name="Entrar" options={{headerShown: false, headerStyle: {backgroundColor: '#0047ab'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white', headerTitleAlign: 'center'}} component = {AdminNavigation}/>
         </Stack.Navigator>
     )
 }

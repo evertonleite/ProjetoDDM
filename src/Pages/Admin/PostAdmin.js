@@ -1,29 +1,86 @@
-import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, TextInput, Alert, Keyboard} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { Card } from '../../Components/Card';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function PostAdmin () {
+
+  const keyAsyncStorage = "@appTeste:post";
+
+  const [title,setTitle] = useState('');
+  const [description,setDescription] = useState('');
+  const [post,setPost] = useState([]);
+
+  async function handlePublicar() {
+      const data ={
+          id: String (new Date().getTime()),
+          title: title,
+          description: description
+      }
+
+      const vetPost = [...post];
+      vetPost.unshift(data);
+
+      try{
+          await AsyncStorage.setItem(keyAsyncStorage, JSON.stringify( vetPost ) );
+      }catch(error){
+          Alert.alert("Erro no envio do post");
+      } 
+
+      Keyboard.dismiss();
+      setTitle("");
+      setDescription("");
+      loadData();
+      
+  }
+
+  async function handleDeletePubli( id ) {
+      const newData = post.filter( item => item.id != id );
+      await AsyncStorage.setItem(keyAsyncStorage, JSON.stringify( newData ));
+      
+      setPost(newData); 
+  }
+
+  async function loadData(){
+      try{
+          const retorno = await AsyncStorage.getItem(  keyAsyncStorage  );   
+          const teste = JSON.parse( retorno )
+          setPost( teste || [] );
+      }catch(error){
+          Alert.alert("Erro na leitura dos dados");
+      }
+  }
+
+  useEffect( ()=>{
+      loadData();      
+  }, []);
+
   return (
       <View style = {styles.containerAll} >
         <View style = {styles.containers}>
           <Text style = {styles.text}>Título</Text>
           <View style = {styles.boxTextAdress}>
-            <TextInput style = {styles.textInput} placeholder = 'Insira o título' />
+            <TextInput style = {styles.textInput} placeholder = 'Insira o título' value={title} onChangeText={setTitle} />
           </View>
         </View>
         <View style = {styles.containers}>
           <Text style = {styles.text}>Descreva sobre:</Text>
           <View style = {styles.boxTextDescription}>
-            <TextInput style = {styles.textInput} placeholder = 'Descreva sobre '/>
+            <TextInput style = {styles.textInput} placeholder = 'Descreva sobre' value={description} onChangeText={setDescription} />
           </View>
           <View style = {styles.ViewButton}>
             <FontAwesome name="photo" size={35} color='#0047ab' />
-            <TouchableOpacity style = {styles.button}>
+            <TouchableOpacity style = {styles.button} onPress= {handlePublicar}>
                 <Text style = {styles.buttonText}>Enviar</Text>
             </TouchableOpacity>
           </View>
         </View>
+        <FlatList data={post}  
+          keyExtractor={item => item.id.toString()} 
+          renderItem={ ({item}) =>  (
+              <Card titleText={item.title} descriptionText={item.description} onPress={() => handleDeletePubli(item.id)}/>
+          ) }/> 
       </View>
   );
 }

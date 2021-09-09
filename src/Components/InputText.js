@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput} from 'react-native';
 
-export function InputText ({title, keyboardType, text, secureTextEntry}) {
+export function InputText ({title, keyboardType, onChangeText, secureTextEntry}) {
     return (
         <View style = {styles.containerAll}>
                 <Text style = {styles.Text}>{title}</Text>
                 <View style = {styles.boxTextTitle}>
-                    <TextInput keyboardType = {keyboardType} secureTextEntry={secureTextEntry} onChangeText = {text} />
+                    <TextInput keyboardType = {keyboardType} secureTextEntry={secureTextEntry} onChangeText = {onChangeText} />
                 </View>
         </View>      
     );

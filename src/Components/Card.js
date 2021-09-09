@@ -1,16 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export function Card () {
+export function Card ({titleText, descriptionText, onPress}) {
     return (
         <View style={styles.card}>
                 <View style = {styles.titleAndHour}>
-                    <Text style = {styles.title}>Encanamento Quebrado</Text>
-                    <Text style = {styles.Hour}>12/08/2021 • 15:30</Text>
+                    <Text style = {styles.title}>{titleText}</Text>
+                    <Text style = {styles.hour}>12/08/2021 • 15:30</Text>
+                    <View>
+                        <TouchableOpacity onPress={onPress} >
+                            <MaterialIcons name="delete" size={30} color="black" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style = {styles.PhotoEText}>
                     <Image style={styles.image} source={require('../images/encanamento.jpg')}/>
-                    <Text style = {styles.texto}>O problema no encanamento da rua José Pereira que estava quebrado, já está sendo resolvido. A previsão é de que em 1hr a água já estará nas torneiras. Palmeiras não tem mundial e CR7Messi, apenas. DIDIDIE DIDIDIDIE CHEIA DE</Text> 
+                    <Text style = {styles.texto}>{descriptionText}</Text> 
                 </View>
         </View>
     );
@@ -56,5 +62,9 @@ const styles = StyleSheet.create ({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
+    },
+    hour: {
+
     }
+
 })
