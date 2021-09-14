@@ -8,16 +8,20 @@ import { PostAdmin } from '../Admin/PostAdmin';
 
 export function Login ({navigation}) {
     
-    /*const [user, setUser] = useState(null);
-    const [password, setPassoword] = useState(null);
+    const [user, setUser] = useState(null);
+    const [password, setPassword] = useState(null);
 
-    function VerificationLogin (){
+    const logando = () => {
         if(user == 12345 && password == 12345){
-            return <PostAdmin />
+            navigation.navigate('Entrar')
+
+            setUser('');
+            setPassword('');
         }else{
-            alert('Houve um erro! Verifique o user e senha.')
+            alert('Houve um erro! Verifique o User e Senha.')
         }
-    }*/
+    }
+
 
     return (
       <ImageBackground source={require('../../images/tela-inicial.jpg')} style={styles.imageBackground}>
@@ -26,9 +30,9 @@ export function Login ({navigation}) {
               <Text style={styles.LogoText}>MyCity</Text>
           </View>
           <View style = {styles.containerLogin} >
-              <InputText keyboardType = 'numeric' title = 'Username' />
-              <InputText title = 'Senha' />
-              <ButtonLogin title = 'Entrar' onPress = {() => {navigation.navigate('Entrar')}} />     
+              <InputText title = 'Username' keyboardType = 'numeric' value={user} onChangeText={x => setUser(x)} />
+              <InputText title = 'Senha' secureTextEntry={true} value= {password} onChangeText={x => setPassword(x)} />
+              <ButtonLogin title = 'Entrar' onPress = {() => logando()}/>     
           </View>
       </ImageBackground>
     );

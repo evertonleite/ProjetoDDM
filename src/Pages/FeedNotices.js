@@ -1,23 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, SafeAreaView, ScrollView } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { Card } from '../Components/Card';
+import Teste from '../Contexts/Provider';
 
 export function FeedNotices () {
+
+    const {post} = Teste();
     return (
-      <SafeAreaView style = {styles.scroll}>
-        <ScrollView style = {styles.scroll}>
-          <View style={styles.container}>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-      
-    
+      <FlatList data={post}  
+          keyExtractor={item => item.id.toString()} 
+          renderItem={ ({item}) =>  (
+              <Card titleText={item.title} descriptionText={item.description}/>
+          ) }/> 
     );
 }
 

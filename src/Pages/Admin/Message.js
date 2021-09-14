@@ -1,21 +1,19 @@
 import React from 'react';
-import {StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
+import {StyleSheet} from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { CardMessage } from '../../Components/CardMessage';
+import TesteMsg from '../../Contexts/ProviderMsg';
 
 export function Message() {
+
+  const {messages} = TesteMsg();
+
     return (
-      <SafeAreaView style = {styles.scroll}>
-        <ScrollView style = {styles.scroll}>
-          <View style={styles.container}>
-             <CardMessage/>
-             <CardMessage/>
-             <CardMessage/>
-             <CardMessage/>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-      
-    
+       <FlatList data={messages}  
+          keyExtractor={item => item.id.toString()} 
+          renderItem={ ({item}) =>  (
+              <CardMessage title={item.title} endereco={item.endereco} description={item.description}/>
+          ) }/>
     );
 }
 
