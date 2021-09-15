@@ -10,11 +10,12 @@ export function FuncoesProvider({children}) {
     
     const [post,setPost] = useState([]);
 
-    async function Publicar(title, description) {
+    async function Publicar(title, description, image) {
         const data ={
             id: String (new Date().getTime()),
             title: title,
             description: description,
+            image: image
         }
   
         const vetPost = [...post];

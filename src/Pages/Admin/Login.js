@@ -4,7 +4,7 @@ import { ImageBackground, StyleSheet, View, Text} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { ButtonLogin } from '../../Components/ButtonLogin';
 import { InputText } from '../../Components/InputText';
-import { PostAdmin } from '../Admin/PostAdmin';
+
 
 export function Login ({navigation}) {
     
@@ -21,7 +21,6 @@ export function Login ({navigation}) {
             alert('Houve um erro! Verifique o User e Senha.')
         }
     }
-
 
     return (
       <ImageBackground source={require('../../images/tela-inicial.jpg')} style={styles.imageBackground}>

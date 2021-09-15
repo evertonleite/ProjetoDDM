@@ -30,8 +30,6 @@ export function ReportProvider ({children}) {
 
       Keyboard.dismiss();
       loadData();
-
-      console.log(messages)
       
   }
 

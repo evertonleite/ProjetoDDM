@@ -1,32 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, TextInput, Alert, Keyboard, Button, Image} from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Image, TextInput} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { Card } from '../../Components/Card';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as ImagePicker from 'expo-image-picker';///////////////////
-import Constants from 'expo-constants';/////////////////////////////
+import Teste from '../../Contexts/Provider';
 
 export function PostAdmin () {
-
-  const keyAsyncStorage = "@appTeste:post";
-
+  
   const [title,setTitle] = useState('');
   const [description,setDescription] = useState('');
-  const [post,setPost] = useState([]);
-  
-  ////////////////////////////////////////////////////////////////////////////////
   const [image,setImage] = useState(null);
 
-      /*useEffect( async () => {
-      if(Platform.OS !== 'web' ){
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if(status !== 'granted' ){
-        alert('permição negada')
-       }
-      }
-    },[])     */
+  const {post, Publicar, DeletePublicacao} = Teste();
 
-  const PickImage = async () => {///////////////////////////////////
+  const PickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing:true,
@@ -37,98 +24,54 @@ export function PostAdmin () {
     if (!result.cancelled) {
       setImage(result.uri)
     }
-    
-}
-////////////////////////////////////////////////////////////////////////////////
+  } 
 
-  async function handlePublicar() {
-      const data ={
-          id: String (new Date().getTime()),
-          title: title,
-          description: description
-      }
-
-      const vetPost = [...post];
-      vetPost.unshift(data);
-
-      try{
-          await AsyncStorage.setItem(keyAsyncStorage, JSON.stringify( vetPost ) );
-      }catch(error){
-          Alert.alert("Erro no envio do post");
-      } 
-
-      Keyboard.dismiss();
-      setTitle("");
-      setDescription("");
-      loadData();
-      
+  async function login(){
+    try{
+        return await Publicar(title, description, image);
+    }catch(error){
+        console.log(error);
+    } 
   }
 
-  async function handleDeletePubli( id ) {
-      const newData = post.filter( item => item.id != id );
-      await AsyncStorage.setItem(keyAsyncStorage, JSON.stringify( newData ));
-      
-      setPost(newData); 
-  }
-
-  async function loadData(){
-      try{
-          const retorno = await AsyncStorage.getItem(  keyAsyncStorage  );   
-          const teste = JSON.parse( retorno )
-          setPost( teste || [] );
-      }catch(error){
-          Alert.alert("Erro na leitura dos dados");
-      }
-  }
-
-  useEffect( ()=>{
-      loadData();      
-  }, []);
+  console.log(post);
 
   return (
+    
       <View style = {styles.containerAll} >
-        
         {image && <Image source={{uri:image}} style={{
           marginTop:10,
           borderWidth:1,
           borderRadius:13,
           borderColor:'#0047ab',
-          width:200,
+          width:320,
           height:200,
         }} />}
-
         <View style = {styles.containers}>
-        
-
           <Text style = {styles.text}>Título</Text>
           <View style = {styles.boxTextAdress}>
-            <TextInput style = {styles.textInput} placeholder = 'Insira o título' value={title} onChangeText={setTitle} />
+            <TextInput style = {styles.textInput} placeholder = 'Insira o título' value={title} onChangeText={x => setTitle(x)} />
           </View>
         </View>
         <View style = {styles.containers}>
           <Text style = {styles.text}>Descreva sobre:</Text>
           <View style = {styles.boxTextDescription}>
-            <TextInput style = {styles.textInput} placeholder = 'Descreva sobre' value={description} onChangeText={setDescription} />
+            <TextInput style = {styles.textInput} placeholder = 'Insira o texto sobre' value={description} onChangeText={x => setDescription(x)} />
           </View>
           <View style = {styles.ViewButton}>
-
             <TouchableOpacity onPress={PickImage} >
-            <FontAwesome name="photo" size={35} color='#0047ab' />
-            </TouchableOpacity>
-
-            <TouchableOpacity style = {styles.button} onPress= {handlePublicar}>
+              <FontAwesome name="photo" size={35} color='#0047ab' />
+            </TouchableOpacity> 
+            <TouchableOpacity style = {styles.button} onPress= {login}>
                 <Text style = {styles.buttonText}>Enviar</Text>
             </TouchableOpacity>
-
           </View>
         </View>
         <FlatList data={post}  
           keyExtractor={item => item.id.toString()} 
           renderItem={ ({item}) =>  (
-              <Card titleText={item.title} descriptionText={item.description} onPress={() => handleDeletePubli(item.id)}/>
+              <Card image={item.image} titleText={item.title} descriptionText={item.description} onPress={() => DeletePublicacao(item.id)}/>
           ) }/> 
-
-        
       </View>
   );
 }

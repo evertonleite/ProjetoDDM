@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export function Card ({titleText, descriptionText, onPress}) {
+export function Card ({titleText, descriptionText, onPress, image}) {
     return (
         <View style={styles.card}>
                 <View style = {styles.titleAndHour}>
@@ -15,7 +15,7 @@ export function Card ({titleText, descriptionText, onPress}) {
                     </View>
                 </View>
                 <View style = {styles.PhotoEText}>
-                    <Image style={styles.image} source={require('../images/encanamento.jpg')}/>
+                    <Image style={styles.image} source={{uri: image}}/>
                     <Text style = {styles.texto}>{descriptionText}</Text> 
                 </View>
         </View>
