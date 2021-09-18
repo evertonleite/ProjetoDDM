@@ -6,13 +6,13 @@ import TesteMsg from '../../Contexts/ProviderMsg';
 
 export function Message() {
 
-  const {messages} = TesteMsg();
+  const {messages, ApagarMensagem} = TesteMsg();
 
     return (
        <FlatList data={messages}  
           keyExtractor={item => item.id.toString()} 
           renderItem={ ({item}) =>  (
-              <CardMessage title={item.title} endereco={item.endereco} description={item.description}/>
+              <CardMessage sugestion={item.sugestion} title={item.title} endereco={item.endereco} description={item.description} onPress={() => ApagarMensagem(item.id)} />
           ) }/>
     );
 }

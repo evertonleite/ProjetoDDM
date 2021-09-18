@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Card } from '../Components/Card';
+import { CardUsers } from '../Components/CardUsers';
 import Teste from '../Contexts/Provider';
 
 export function FeedNotices () {
@@ -11,7 +11,7 @@ export function FeedNotices () {
       <FlatList data={post}  
           keyExtractor={item => item.id.toString()} 
           renderItem={ ({item}) =>  (
-              <Card image={item.image} titleText={item.title} descriptionText={item.description}/>
+              <CardUsers image={item.image} titleText={item.title} descriptionText={item.description}/>
           ) }/> 
     )
 }

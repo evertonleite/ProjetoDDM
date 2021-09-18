@@ -10,12 +10,13 @@ export function ReportProvider ({children}) {
 
   const [messages,setMessages] = useState([]);
 
-  async function EnviarMensagem(title, endereco, description) {
+  async function EnviarMensagem(title, endereco, description, sugestion) {
       const data ={
           id: String (new Date().getTime()),
           title: title,
           endereco: endereco,
-          description: description
+          description: description,
+          sugestion: sugestion
       }
 
       const vetMessages = [...messages];
@@ -33,6 +34,13 @@ export function ReportProvider ({children}) {
       
   }
 
+  async function ApagarMensagem(id) {
+    const newData = messages.filter( item => item.id != id );
+    await AsyncStorage.setItem(keyAsyncStorage, JSON.stringify(newData));
+    
+    setMessages(newData); 
+}
+
   async function loadData(){
       try{
           const retorno = await AsyncStorage.getItem(  keyAsyncStorage  );   
@@ -48,7 +56,7 @@ export function ReportProvider ({children}) {
   }, []);
 
     return(
-        <ReportContext.Provider value={{messages, EnviarMensagem}}>
+        <ReportContext.Provider value={{messages, EnviarMensagem, ApagarMensagem}}>
             {children}
         </ReportContext.Provider>
     )

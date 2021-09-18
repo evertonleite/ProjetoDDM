@@ -2,24 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export function CardMessage({title, endereco, description}) {
+export function CardMessage({title, endereco, description, sugestion, onPress}) {
     return (
         <View style={styles.card}>
                 <View style = {styles.cardTitle}>
                     <View style = {styles.titleAndName}>
-                        <Text style = {styles.title}>Problema: </Text>
+                        <Text style = {styles.title}>{sugestion}: </Text>
                         <Text style = {styles.name}>{title}</Text>
                     </View>
                     <View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={onPress}>
                             <MaterialIcons name="delete" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style = {styles.cardEmail}>
-                    <Text style = {styles.title}>Email: </Text>
-                    <Text style = {styles.email}>everton@gmail.com</Text>
-               </View>
                <View style = {styles.cardEndereco}>
                     <Text style = {styles.title}>Endereço: </Text>
                     <Text style = {styles.endereco}>{endereco}</Text>

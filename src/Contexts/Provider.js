@@ -6,7 +6,7 @@ const FuncoesContext = createContext({});
 
 export function FuncoesProvider({children}) {
 
-    const keyAsyncStorage = "@appTeste:Post";
+    const keyAsyncStorage = "@appTeste:Post1";
     
     const [post,setPost] = useState([]);
 
